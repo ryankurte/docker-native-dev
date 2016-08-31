@@ -1,11 +1,13 @@
 # Docker Linux native development environment
 
-Because I needed a container for development / CI
+A container for native Linux development and Continuous Integration.
+
+Check it out on [dokerhub](https://hub.docker.com/r/ryankurte/docker-native-dev/).
 
 ## Includes:
 
 build-essential (native)
-make, cmaka
-clang
-
+make, cmake, automake, ninja
+clang, gcc
+ccache
 
