@@ -10,4 +10,6 @@ Check it out on [dokerhub](https://hub.docker.com/r/ryankurte/docker-native-dev/
  - make, cmake, automake, ninja
  - clang, gcc
  - ccache
+ - python3, pip3, pystache, pyyaml
+
 
