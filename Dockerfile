@@ -41,12 +41,12 @@ WORKDIR /root
 # Install GoogleTest
 RUN git clone https://github.com/google/googletest.git
 RUN cd googletest && git checkout release-1.8.0 && \
-    mkdir -p build && cd build && cmake .. && make && cd ../..
+    mkdir -p build && cd build && cmake -GNinja .. && ninja install && cd ../..
 
 # Install Protobufs
 RUN git clone https://github.com/google/protobuf.git
 RUN cd protobuf && git checkout v3.1.0 \
-    && ./autogen.sh && ./configure && make && make check && make install
+    && ./autogen.sh && ./configure && make -j 4 && make check && make install
 RUN ldconfig
 
 # Cleanup
