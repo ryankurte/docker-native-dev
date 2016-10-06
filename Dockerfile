@@ -2,7 +2,7 @@ FROM ubuntu:latest
 MAINTAINER Ryan Kurte <ryankurte@gmail.com>
 LABEL Description="Docker image for building x86/64 native projects"
 
-# General dependencies
+# General dependencies and cleanup
 RUN apt-get update && apt-get install -y \
   git \
   subversion \
@@ -29,27 +29,26 @@ RUN apt-get update && apt-get install -y \
   build-essential \
   python3 \
   python3-dev \
-  python3-pip
+  python3-pip \
+  && apt-get clean 
+  && rm -rf /var/lib/apt /tmp/* /var/tmp/*
   
 
 # Update PIP & Install useful packages
-RUN pip3 install --upgrade pip
-RUN pip3 install pystache pyyaml
+RUN pip3 install --upgrade pip && pip3 install pystache pyyaml
 
+# Set working directory for manually installed components
 WORKDIR /root
 
 # Install GoogleTest
-RUN git clone https://github.com/google/googletest.git
-RUN cd googletest && git checkout release-1.8.0 && \
-    mkdir -p build && cd build && cmake -GNinja .. && ninja install && cd ../..
+RUN git clone --branch release-1.8.0 --depth=1 https://github.com/google/googletest.git \
+    && cd googletest && mkdir -p build && cd build 
+    && cmake -GNinja .. && ninja install && cd ../..
 
 # Install Protobufs
-RUN git clone https://github.com/google/protobuf.git
-RUN cd protobuf && git checkout v3.1.0 \
-    && ./autogen.sh && ./configure && make -j 4 && make check && make install
-RUN ldconfig
+RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
+    && cd protobuf && ./autogen.sh && ./configure && make -j 4 \
+    && make check && make install && ldconfig
 
-# Cleanup
-RUN apt-get clean && \
-  rm -rf /var/lib/apt
+
 
