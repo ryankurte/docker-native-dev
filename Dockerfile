@@ -41,7 +41,7 @@ WORKDIR /root
 
 # Install GoogleTest
 RUN git clone --branch release-1.8.0 --depth=1 https://github.com/google/googletest.git \
-    && cd googletest && mkdir -p build && cd build 
+    && cd googletest && mkdir -p build && cd build \
     && cmake -GNinja .. && ninja install \
     && cd ../.. && rm -rf ./googletest
 
