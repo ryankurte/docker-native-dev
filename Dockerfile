@@ -47,9 +47,12 @@ RUN git clone --branch release-1.8.0 --depth=1 https://github.com/google/googlet
 
 # Install Protobufs
 RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
-    && cd protobuf && ./autogen.sh && ./configure && make -j 4 \
-    && make check && make install && ldconfig \
-    && cd ../ && rm -rf ./protobuf
+    && cd protobuf \ 
+    && ./autogen.sh && ./configure && make -j 4 && make check && make install && ldconfig \
+    && cd ./python \
+    && python setup.py install \
+    && cd ../../ \
+    && rm -rf ./protobuf
 
 
 
