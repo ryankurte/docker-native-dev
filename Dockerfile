@@ -3,7 +3,6 @@ MAINTAINER Ryan Kurte <ryankurte@gmail.com>
 LABEL Description="Docker image for building x86/64 native projects"
 
 # General dependencies and cleanup
-RUN sudo add-apt-repository -y ppa:ubuntu-lxc/lxd-stable
 RUN apt-get update && apt-get install -y \
   git \
   subversion \
@@ -33,7 +32,6 @@ RUN apt-get update && apt-get install -y \
   python3-pip \
   libsodium-dev \
   libzmq3-dev \
-  golang \
   && apt-get clean && rm -rf /var/lib/apt /tmp/* /var/tmp/*
   
 
@@ -58,5 +56,8 @@ RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
     && cd ../../ \
     && rm -rf ./protobuf
 
-
+# Install Golang
+RUN RUN add-apt-repository -y ppa:ubuntu-lxc/lxd-stable \
+    && sudo apt-get update -y \
+    && sudo apt-get install golang
 
