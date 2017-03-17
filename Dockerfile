@@ -58,6 +58,6 @@ RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
 
 # Install Golang
 RUN RUN add-apt-repository -y ppa:ubuntu-lxc/lxd-stable \
-    && sudo apt-get update -y \
-    && sudo apt-get install golang
+    && apt-get update -y \
+    && apt-get install golang
 
