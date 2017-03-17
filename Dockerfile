@@ -57,7 +57,13 @@ RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
     && rm -rf ./protobuf
 
 # Install Golang
-RUN add-apt-repository -y ppa:ubuntu-lxc/lxd-stable \
-    && apt-get update -y \
-    && apt-get install -y golang
+RUN curl -O https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz \
+    && tar -C /usr/local -xf go1.8.linux-amd64.tar.gz
+ENV PATH $PATH:/usr/local/go/bin
+RUN mkdir /root/go
+ENV GOPATH /root/go
+
+
+
+
 
