@@ -49,6 +49,13 @@ RUN git clone --branch release-1.8.0 --depth=1 https://github.com/google/googlet
     && cmake -GNinja .. && ninja install \
     && cd ../.. && rm -rf ./googletest
 
+# Install Golang
+RUN curl -O https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz \
+    && tar -C /usr/local -xf go1.8.linux-amd64.tar.gz
+ENV PATH $PATH:/usr/local/go/bin
+RUN mkdir /root/go
+ENV GOPATH /root/go
+
 # Install Protobufs
 RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
     && cd protobuf \ 
@@ -57,13 +64,17 @@ RUN git clone --branch=v3.1.0 --depth=1 https://github.com/google/protobuf.git \
     && python setup.py install \
     && cd ../../ \
     && rm -rf ./protobuf
+    
+# Install protobuf-c
+RUN git clone  --depth=1  https://github.com/protobuf-c/protobuf-c.git \
+  && cd protobuf-c \
+  && ./autogen.sh \
+  && ./configure \
+  && make && make install \
+  && cd ../ \
+  && rm -rf ./protobuf-c
 
-# Install Golang
-RUN curl -O https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz \
-    && tar -C /usr/local -xf go1.8.linux-amd64.tar.gz
-ENV PATH $PATH:/usr/local/go/bin
-RUN mkdir /root/go
-ENV GOPATH /root/go
+
 
 
 
