@@ -21,12 +21,12 @@ RUN apt-get update && apt-get install -y \
   libusb-1.0.0 \
   libusb-1.0.0-dev \
   software-properties-common \
-  python-software-properties \
   gawk \
   genromfs \
   ccache \
   clang \
   build-essential \
+  clang \
   python3 \
   python3-dev \
   python3-pip \
@@ -34,24 +34,26 @@ RUN apt-get update && apt-get install -y \
   libzmq3-dev \
   libczmq-dev \
   pkg-config \
+  valgrind \
+  cppcheck \
   && apt-get clean && rm -rf /var/lib/apt /tmp/* /var/tmp/*
   
 
 # Update PIP & Install useful packages
-RUN pip3 install --upgrade pip && pip3 install pystache pyyaml
+RUN pip3 install pystache pyyaml
 
 # Set working directory for manually installed components
 WORKDIR /root
 
 # Install GoogleTest
-RUN git clone --branch release-1.8.0 --depth=1 https://github.com/google/googletest.git \
+RUN git clone --branch release-1.8.1 --depth=1 https://github.com/google/googletest.git \
     && cd googletest && mkdir -p build && cd build \
     && cmake -GNinja .. && ninja install \
     && cd ../.. && rm -rf ./googletest
 
 # Install Golang
-RUN curl -O https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz \
-    && tar -C /usr/local -xf go1.8.linux-amd64.tar.gz
+RUN curl -O https://storage.googleapis.com/golang/go1.12.4.linux-amd64.tar.gz \
+    && tar -C /usr/local -xf go1.12.4.linux-amd64.tar.gz
 ENV PATH $PATH:/usr/local/go/bin
 RUN mkdir /root/go
 ENV GOPATH /root/go
@@ -70,7 +72,7 @@ RUN git clone  --depth=1  https://github.com/protobuf-c/protobuf-c.git \
   && cd protobuf-c \
   && ./autogen.sh \
   && ./configure \
-  && make && make install \
+  && make -j && make install \
   && cd ../ \
   && rm -rf ./protobuf-c
 
